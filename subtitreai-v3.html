@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SubTitre AI – Free Desi Caption Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07070a;--bg2:#0f0f14;--bg3:#17171f;
+  --accent:#f5c842;--accent2:#ff6b35;
+  --text:#f0ece4;--muted:#5a5870;--muted2:#888699;
+  --border:rgba(255,255,255,0.07);--card:rgba(255,255,255,0.04);
+  --green:#22c55e;--radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.4;}
+
+#landingPage{display:block;}
+#studioPage{display:none;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:14px 5%;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(28px);border-bottom:1px solid var(--border);background:rgba(7,7,10,0.9);}
+.logo{font-family:'Syne',sans-serif;font-weight:900;font-size:1.45rem;color:var(--accent);letter-spacing:-1.5px;cursor:pointer;}
+.logo span{color:var(--text);}
+.nav-links{display:flex;gap:30px;list-style:none;}
+.nav-links a{color:var(--muted2);text-decoration:none;font-size:.84rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:var(--text);}
+.nav-free-badge{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.22);color:var(--green);padding:5px 14px;border-radius:100px;font-size:.73rem;font-weight:700;letter-spacing:.07em;}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:130px 5% 80px;position:relative;overflow:hidden;}
+.hero-blob{position:absolute;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,rgba(245,200,66,.08) 0%,transparent 60%);top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;}
+.hero-blob2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(255,107,53,.06) 0%,transparent 70%);bottom:15%;right:12%;pointer-events:none;}
+.free-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);color:var(--green);padding:7px 20px;border-radius:100px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:30px;animation:fadeUp .5s ease both;}
+.free-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+h1.hero-title{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,6.5vw,6rem);font-weight:900;line-height:1.02;letter-spacing:-3px;margin-bottom:24px;animation:fadeUp .5s .08s ease both;}
+h1.hero-title em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:1.08rem;color:var(--muted2);max-width:490px;line-height:1.75;margin-bottom:44px;animation:fadeUp .5s .16s ease both;}
+.cta-group{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .5s .22s ease both;margin-bottom:56px;}
+.btn-big{background:var(--accent);color:#07070a;border:none;padding:15px 38px;border-radius:10px;font-size:.98rem;font-weight:700;cursor:pointer;transition:transform .15s,box-shadow .2s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:9px;letter-spacing:-.2px;}
+.btn-big:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(245,200,66,.25);}
+.btn-outline{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.12);padding:15px 32px;border-radius:10px;font-size:.92rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.btn-outline:hover{border-color:rgba(255,255,255,.22);background:var(--card);}
+.trust{display:flex;align-items:center;gap:10px;color:var(--muted2);font-size:.82rem;animation:fadeUp .5s .28s ease both;}
+.stars{color:var(--accent);letter-spacing:3px;}
+.lang-strip{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:14px 0;overflow:hidden;}
+.lang-track{display:flex;animation:scrollX 30s linear infinite;width:max-content;}
+.lang-item{padding:0 26px;font-size:.75rem;font-weight:600;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;border-right:1px solid var(--border);white-space:nowrap;}
+.lang-item.hi{color:var(--accent);}
+@keyframes scrollX{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+.templates-section{padding:100px 5%;max-width:1300px;margin:0 auto;}
+.sec-label{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.08;letter-spacing:-1.5px;margin-bottom:14px;}
+.sec-sub{color:var(--muted2);font-size:.93rem;line-height:1.72;max-width:460px;}
+.tmpl-row{display:flex;gap:14px;margin-top:46px;overflow-x:auto;padding-bottom:10px;}
+.tmpl-row::-webkit-scrollbar{height:4px;}
+.tmpl-row::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.tmpl-card{flex:0 0 148px;height:250px;border-radius:14px;border:1px solid var(--border);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;position:relative;cursor:pointer;transition:transform .2s,border-color .25s,box-shadow .25s;}
+.tmpl-card:hover{transform:translateY(-6px);border-color:rgba(245,200,66,.4);box-shadow:0 20px 50px rgba(0,0,0,.4);}
+.tmpl-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:2.8rem;}
+.tmpl-cap{position:absolute;left:50%;transform:translateX(-50%);bottom:50px;white-space:nowrap;font-weight:700;padding:5px 10px;border-radius:5px;font-size:.7rem;}
+.cap-beast{background:#00d4ff;color:#000;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.05em;}
+.cap-hor{background:#fff;color:#000;font-style:italic;border-left:3px solid red;padding-left:8px;}
+.cap-gad{color:#fff;text-shadow:2px 2px 0 #000;font-size:.85rem;background:transparent;}
+.cap-bub{background:#ffe345;color:#111;border-radius:10px;}
+.cap-hindi{background:linear-gradient(90deg,#ff6b35,#f5c842);color:#fff;border-radius:4px;}
+.cap-min{color:#fff;border-bottom:2px solid var(--accent);background:transparent;letter-spacing:.06em;}
+.cap-fire{background:linear-gradient(90deg,#ff4500,#ff8c00);color:#fff;font-family:'Syne',sans-serif;text-transform:uppercase;}
+.cap-neon{color:#39ff14;text-shadow:0 0 10px #39ff14,0 0 20px #39ff14;background:transparent;}
+.cap-retro{background:#1a1a2e;color:#e94560;font-family:'Syne',sans-serif;border:1px solid #e94560;}
+.cap-kalakar{background:linear-gradient(90deg,#a78bfa,#38bdf8);color:#fff;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.04em;}
+.cap-clean{color:#fff;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);border-radius:8px;}
+.cap-double{color:#fff;background:#111;font-weight:900;letter-spacing:-.03em;}
+.tmpl-foot{padding:8px 12px;background:rgba(0,0,0,.8);position:relative;z-index:2;}
+.tmpl-foot h4{font-size:.75rem;font-weight:600;}
+.tmpl-foot span{font-size:.62rem;color:var(--muted2);}
+
+.features-section{padding:100px 5%;max-width:1200px;margin:0 auto;}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:46px;}
+.feat-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:30px;transition:all .25s;}
+.feat-card:hover{border-color:rgba(245,200,66,.15);transform:translateY(-4px);background:rgba(245,200,66,.02);}
+.feat-icon{font-size:1.9rem;margin-bottom:18px;}
+.feat-card h3{font-family:'Syne',sans-serif;font-size:1.02rem;font-weight:700;margin-bottom:9px;}
+.feat-card p{font-size:.83rem;color:var(--muted2);line-height:1.68;}
+
+.how-section{padding:100px 5%;max-width:1100px;margin:0 auto;}
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:46px;}
+.step-card{text-align:center;padding:36px 24px;background:var(--bg2);border:1px solid var(--border);border-radius:18px;}
+.step-num{width:48px;height:48px;border-radius:50%;background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);color:var(--accent);font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+.step-card h3{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:10px;}
+.step-card p{font-size:.83rem;color:var(--muted2);line-height:1.65;}
+
+footer{border-top:1px solid var(--border);padding:44px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.f-links{display:flex;gap:24px;}
+.f-links a{color:var(--muted2);text-decoration:none;font-size:.78rem;transition:color .2s;}
+.f-links a:hover{color:var(--text);}
+footer p{font-size:.76rem;color:var(--muted);}
+
+/* ===== STUDIO ===== */
+#studioPage{flex-direction:column;height:100vh;overflow:hidden;}
+.studio-nav{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+.studio-logo{font-family:'Syne',sans-serif;font-weight:900;font-size:1.25rem;color:var(--accent);cursor:pointer;letter-spacing:-1px;}
+.studio-logo span{color:var(--text);}
+.back-btn{display:flex;align-items:center;gap:7px;color:var(--muted2);font-size:.8rem;cursor:pointer;padding:7px 14px;border-radius:8px;border:1px solid var(--border);transition:all .2s;}
+.back-btn:hover{color:var(--text);border-color:rgba(255,255,255,.14);}
+.studio-body{display:flex;flex:1;overflow:hidden;}
+
+/* LEFT PANEL */
+.studio-left{width:280px;flex-shrink:0;border-right:1px solid var(--border);background:var(--bg2);display:flex;flex-direction:column;overflow:hidden;}
+.panel-tabs{display:flex;border-bottom:1px solid var(--border);}
+.panel-tab{flex:1;padding:10px 4px;text-align:center;font-size:.7rem;font-weight:600;cursor:pointer;color:var(--muted2);transition:all .2s;border-bottom:2px solid transparent;}
+.panel-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.panel-content{flex:1;overflow-y:auto;padding:14px;}
+.panel-content::-webkit-scrollbar{width:3px;}
+.panel-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.upload-zone{border:2px dashed rgba(245,200,66,.22);border-radius:12px;padding:26px 14px;text-align:center;cursor:pointer;transition:all .2s;position:relative;background:rgba(245,200,66,.02);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(245,200,66,.05);}
+.upload-icon{font-size:2.2rem;margin-bottom:9px;}
+.upload-zone h3{font-size:.84rem;font-weight:600;margin-bottom:4px;}
+.upload-zone p{font-size:.7rem;color:var(--muted2);line-height:1.55;}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+
+.form-label{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted2);margin-bottom:5px;display:block;margin-top:12px;}
+.lang-select{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:8px;font-size:.8rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;cursor:pointer;-webkit-appearance:none;}
+.lang-select:focus{border-color:rgba(245,200,66,.38);}
+
+.gen-btn{width:100%;margin-top:12px;background:var(--accent);color:#07070a;border:none;padding:11px;border-radius:9px;font-size:.86rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.gen-btn:hover:not(:disabled){background:#ffd55a;transform:scale(1.01);}
+.gen-btn:disabled{opacity:.42;cursor:not-allowed;transform:none;}
+
+.progress-wrap{margin-top:11px;display:none;}
+.progress-bar{height:3px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-bottom:6px;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .4s ease;width:0%;}
+.progress-label{font-size:.68rem;color:var(--muted2);text-align:center;}
+
+.transcript-mode{margin-top:9px;padding:7px 11px;border-radius:8px;font-size:.7rem;display:none;align-items:center;gap:7px;}
+.transcript-mode.real{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);color:var(--green);display:flex;}
+.transcript-mode.demo{background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.18);color:var(--accent);display:flex;}
+
+/* TEMPLATE PANEL */
+.tmpl-label{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);margin:14px 0 8px;}
+.tmpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.tmpl-item{border:1px solid var(--border);border-radius:8px;padding:0;cursor:pointer;text-align:center;transition:all .2s;font-size:.68rem;font-weight:600;position:relative;overflow:hidden;}
+.tmpl-item:hover,.tmpl-item.sel{border-color:var(--accent);background:rgba(245,200,66,.07);color:var(--accent);}
+.tmpl-item-inner{padding:10px 8px;}
+.tmpl-preview-box{height:34px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;border-radius:5px;font-size:.6rem;font-weight:700;}
+.tmpl-name{font-size:.68rem;font-weight:600;}
+.tmpl-sub{font-size:.56rem;color:var(--muted2);margin-top:2px;}
+.tmpl-item.sel .tmpl-sub{color:rgba(245,200,66,.7);}
+
+/* Caption list */
+.caption-list{display:flex;flex-direction:column;gap:5px;}
+.cap-item{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:9px 11px;cursor:pointer;transition:all .2s;}
+.cap-item:hover,.cap-item.sel{border-color:rgba(245,200,66,.35);background:rgba(245,200,66,.03);}
+.cap-time{font-size:.64rem;color:var(--accent);font-weight:600;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;}
+.cap-text{font-size:.78rem;line-height:1.42;}
+.cap-text[contenteditable]{outline:none;cursor:text;}
+.cap-text[contenteditable]:focus{color:var(--accent);}
+.cap-delete{color:var(--muted);font-size:.68rem;cursor:pointer;opacity:0;transition:opacity .2s;}
+.cap-item:hover .cap-delete{opacity:1;}
+.no-caps{text-align:center;padding:36px 18px;color:var(--muted2);font-size:.8rem;line-height:1.6;}
+
+/* CENTER VIDEO */
+.studio-center{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);}
+.video-toolbar{display:flex;align-items:center;gap:7px;padding:8px 13px;border-bottom:1px solid var(--border);background:var(--bg2);flex-wrap:wrap;}
+.vtb-btn{background:var(--bg3);border:1px solid var(--border);color:var(--muted2);padding:5px 11px;border-radius:6px;font-size:.73rem;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.vtb-btn:hover{border-color:rgba(255,255,255,.18);color:var(--text);}
+.vtb-btn.active{background:rgba(245,200,66,.1);border-color:var(--accent);color:var(--accent);}
+.vtb-sep{width:1px;height:18px;background:var(--border);}
+.video-area{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:18px;}
+.video-container{position:relative;max-width:320px;width:100%;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 0 80px rgba(0,0,0,.7);}
+video{width:100%;display:block;}
+.caption-overlay{position:absolute;bottom:0;left:0;right:0;text-align:center;padding:0 10px 18px;pointer-events:none;transition:all .15s;}
+.caption-display{display:inline-block;padding:7px 16px;border-radius:6px;font-weight:700;max-width:92%;word-break:break-word;transition:opacity .12s;line-height:1.35;}
+.empty-video{display:flex;flex-direction:column;align-items:center;justify-content:center;height:340px;color:var(--muted2);text-align:center;gap:12px;}
+.empty-video span{font-size:3rem;}
+.empty-video p{font-size:.8rem;line-height:1.6;}
+
+.timeline-bar{height:62px;border-top:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;padding:0 13px;gap:9px;flex-shrink:0;}
+.tl-play{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;color:#07070a;font-size:.9rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:transform .15s;}
+.tl-play:hover{transform:scale(1.08);}
+.tl-time{font-size:.7rem;color:var(--muted2);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.tl-track{flex:1;height:5px;background:var(--bg3);border-radius:4px;position:relative;cursor:pointer;}
+.tl-prog{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;pointer-events:none;}
+.tl-handle{position:absolute;top:50%;width:12px;height:12px;background:var(--accent);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;box-shadow:0 0 10px rgba(245,200,66,.5);}
+
+/* RIGHT PANEL — Advanced Style Settings */
+.studio-right{width:260px;flex-shrink:0;border-left:1px solid var(--border);background:var(--bg2);overflow-y:auto;padding:14px 12px;}
+.studio-right::-webkit-scrollbar{width:3px;}
+.studio-right::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.right-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.84rem;margin-bottom:12px;letter-spacing:-.3px;color:var(--text);}
+.style-section{margin-bottom:14px;}
+.style-section label{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted2);display:block;margin-bottom:6px;}
+.size-row{display:flex;gap:4px;}
+.size-btn{flex:1;padding:6px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-size:.7rem;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.size-btn.active,.size-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(245,200,66,.08);}
+.color-row{display:flex;gap:5px;flex-wrap:wrap;}
+.color-dot{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .15s;flex-shrink:0;}
+.color-dot.sel,.color-dot:hover{transform:scale(1.2);border-color:rgba(255,255,255,.5);}
+.pos-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;}
+.pos-btn{padding:6px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-size:.66rem;cursor:pointer;transition:all .2s;text-align:center;font-family:'Plus Jakarta Sans',sans-serif;}
+.pos-btn.active,.pos-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(245,200,66,.08);}
+.stroke-row{display:flex;gap:4px;}
+.stroke-btn{flex:1;padding:6px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--muted2);font-size:.68rem;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;text-align:center;}
+.stroke-btn.active,.stroke-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(245,200,66,.08);}
+
+/* Slider controls */
+.slider-row{display:flex;align-items:center;gap:8px;}
+.style-slider{flex:1;-webkit-appearance:none;appearance:none;height:3px;border-radius:4px;background:var(--bg3);outline:none;cursor:pointer;}
+.style-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;box-shadow:0 0 6px rgba(245,200,66,.4);}
+.slider-val{font-size:.7rem;color:var(--accent);font-weight:600;min-width:26px;text-align:right;}
+
+/* Toggle switch */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.toggle-label{font-size:.72rem;color:var(--muted2);}
+.toggle-switch{width:32px;height:18px;background:var(--bg3);border:1px solid var(--border);border-radius:100px;position:relative;cursor:pointer;transition:background .2s;}
+.toggle-switch.on{background:rgba(245,200,66,.3);border-color:var(--accent);}
+.toggle-knob{position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--muted);transition:left .2s,background .2s;}
+.toggle-switch.on .toggle-knob{left:16px;background:var(--accent);}
+
+/* Shadow sub-section */
+.shadow-sub{padding:9px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);margin-top:6px;display:none;}
+.shadow-sub.visible{display:block;}
+.shadow-sub label{font-size:.62rem;color:var(--muted2);margin-bottom:4px;display:block;}
+
+.export-btn{width:100%;background:var(--accent);color:#07070a;border:none;padding:10px;border-radius:8px;font-size:.84rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;margin-top:7px;}
+.export-btn:hover{background:#ffd55a;}
+.srt-btn{width:100%;background:transparent;color:var(--text);border:1px solid var(--border);padding:9px;border-radius:8px;font-size:.8rem;font-weight:500;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;margin-top:6px;}
+.srt-btn:hover{border-color:rgba(255,255,255,.18);background:var(--card);}
+.copy-btn{width:100%;background:transparent;color:var(--text);border:1px solid var(--border);padding:9px;border-radius:8px;font-size:.8rem;font-weight:500;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;margin-top:6px;}
+.copy-btn:hover{border-color:rgba(255,255,255,.18);background:var(--card);}
+.divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+
+/* Hex color input */
+.hex-row{display:flex;align-items:center;gap:6px;margin-top:5px;}
+.hex-swatch{width:22px;height:22px;border-radius:5px;border:1px solid var(--border);cursor:pointer;flex-shrink:0;}
+.hex-hash{font-size:.7rem;color:var(--muted2);}
+.hex-input{flex:1;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:4px 7px;border-radius:6px;font-size:.73rem;font-family:'Plus Jakarta Sans',sans-serif;outline:none;width:0;}
+.hex-input:focus{border-color:rgba(245,200,66,.35);}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg2);border:1px solid var(--border);padding:10px 20px;border-radius:10px;font-size:.8rem;opacity:0;transition:all .3s;z-index:9000;pointer-events:none;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.success{border-color:rgba(34,197,94,.35);color:var(--green);}
+.toast.error{border-color:rgba(255,107,53,.35);color:var(--accent2);}
+.toast.info{border-color:rgba(245,200,66,.3);color:var(--accent);}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+.spinner{width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:#07070a;border-radius:50%;animation:spin .6s linear infinite;}
+
+.video-info{margin-top:11px;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:none;}
+.video-info-inner{padding:8px 11px;background:var(--bg3);display:flex;align-items:center;gap:9px;}
+.video-info-text .fname{font-size:.76rem;font-weight:600;}
+.video-info-text .fsize{font-size:.66rem;color:var(--muted2);}
+.video-info-text .fdur{font-size:.66rem;color:var(--accent);margin-top:2px;}
+
+.rec-badge{display:none;align-items:center;gap:6px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.25);color:var(--accent2);padding:4px 10px;border-radius:100px;font-size:.68rem;font-weight:600;}
+.rec-badge .rec-dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:blink 1s infinite;}
+
+@media(max-width:960px){.studio-right{display:none;}.studio-left{width:250px;}.feat-grid{grid-template-columns:1fr 1fr;}.nav-links{display:none;}.steps-row{grid-template-columns:1fr;}}
+@media(max-width:640px){.studio-left{width:100%;}.studio-body{flex-direction:column;}.feat-grid{grid-template-columns:1fr;}.steps-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landingPage">
+<nav>
+  <div class="logo" onclick="goHome()">Sub<span>Titre</span></div>
+  <ul class="nav-links">
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+  </ul>
+  <div class="nav-free-badge">100% Free · Hamesha</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-blob"></div><div class="hero-blob2"></div>
+  <div class="free-pill">🎉 Bilkul Free · Koi Signup Nahi · Real AI Transcript</div>
+  <h1 class="hero-title">Real AI Captions,<br><em>Desi Awaz ke Liye.</em></h1>
+  <p class="hero-sub">Video upload karo — AI khud sunkar real captions banata hai. Hindi, Urdu, Punjabi aur 12+ languages. No fake captions, sirf sach.</p>
+  <div class="cta-group">
+    <button class="btn-big" onclick="openStudio()">🎬 Studio Kholo — Abhi Free</button>
+    <button class="btn-outline" onclick="document.getElementById('templates').scrollIntoView({behavior:'smooth'})">Templates Dekho</button>
+  </div>
+  <div class="trust"><span class="stars">★★★★★</span><span>50,000+ creators ka bharosa · Browser mein hi sab kuch</span></div>
+</div>
+
+<div class="lang-strip">
+  <div class="lang-track">
+    <div class="lang-item hi">Hindi</div><div class="lang-item">Urdu</div><div class="lang-item">Punjabi</div><div class="lang-item">Tamil</div><div class="lang-item">Telugu</div><div class="lang-item">Malayalam</div><div class="lang-item">Gujarati</div><div class="lang-item">Bengali</div><div class="lang-item">Marathi</div><div class="lang-item">Kannada</div><div class="lang-item">Nepali</div><div class="lang-item">English</div>
+    <div class="lang-item hi">Hindi</div><div class="lang-item">Urdu</div><div class="lang-item">Punjabi</div><div class="lang-item">Tamil</div><div class="lang-item">Telugu</div><div class="lang-item">Malayalam</div><div class="lang-item">Gujarati</div><div class="lang-item">Bengali</div><div class="lang-item">Marathi</div><div class="lang-item">Kannada</div><div class="lang-item">Nepali</div><div class="lang-item">English</div>
+  </div>
+</div>
+
+<div class="templates-section" id="templates">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;">
+    <div>
+      <div class="sec-label">Templates</div>
+      <h2 class="sec-title">Trending Caption<br>Styles — Free</h2>
+      <p class="sec-sub">Sabse popular creators ke styles, ek click mein. Fully customizable colors, fonts, size.</p>
+    </div>
+    <button class="btn-big" style="font-size:.84rem;padding:12px 22px;" onclick="openStudio()">Studio mein Try Karo →</button>
+  </div>
+  <div class="tmpl-row">
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#001e3a,#003d6e);">
+      <div class="tmpl-bg">🎬</div><div class="tmpl-cap cap-beast">BEAST STYLE</div>
+      <div class="tmpl-foot"><h4>Mr. Beast</h4><span>Bold Cyan</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#1a1a1a,#2d2d2d);">
+      <div class="tmpl-bg">💪</div><div class="tmpl-cap cap-hor">Hormozi</div>
+      <div class="tmpl-foot"><h4>Alex Hormozi</h4><span>White Italic</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#0d1117,#1c2434);">
+      <div class="tmpl-bg">🎯</div><div class="tmpl-cap cap-gad">GADZHI</div>
+      <div class="tmpl-foot"><h4>Iman Gadzhi</h4><span>Outline</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#2d0a4e,#4a1a7e);">
+      <div class="tmpl-bg">💬</div><div class="tmpl-cap cap-bub">Bubble!</div>
+      <div class="tmpl-foot"><h4>Bubble Style</h4><span>Yellow Pop</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#1a0800,#3d1500);">
+      <div class="tmpl-bg">🇮🇳</div><div class="tmpl-cap cap-hindi">हिंदी Bold</div>
+      <div class="tmpl-foot"><h4>Desi Style</h4><span>Gradient</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#0a0f1e,#151d35);">
+      <div class="tmpl-bg">✨</div><div class="tmpl-cap cap-min">MINIMAL</div>
+      <div class="tmpl-foot"><h4>Ali Abdaal</h4><span>Underline</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#1a0400,#3a0800);">
+      <div class="tmpl-bg">🔥</div><div class="tmpl-cap cap-fire">FIRE</div>
+      <div class="tmpl-foot"><h4>Fire Style</h4><span>Gradient</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#000,#0a1a0a);">
+      <div class="tmpl-bg">💚</div><div class="tmpl-cap cap-neon">NEON</div>
+      <div class="tmpl-foot"><h4>Neon Glow</h4><span>Green glow</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#0a0a1a,#1a1a2e);">
+      <div class="tmpl-bg">🕹️</div><div class="tmpl-cap cap-retro">RETRO</div>
+      <div class="tmpl-foot"><h4>Retro Gaming</h4><span>Pixel edge</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#1a0a2e,#2a1050);">
+      <div class="tmpl-bg">🌈</div><div class="tmpl-cap cap-kalakar">KALAKAR</div>
+      <div class="tmpl-foot"><h4>Kalakar Glow</h4><span>Purple-Blue</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#111,#222);">
+      <div class="tmpl-bg">🪟</div><div class="tmpl-cap cap-clean">Clean Glass</div>
+      <div class="tmpl-foot"><h4>Clean Motion</h4><span>Glassmorphism</span></div>
+    </div>
+    <div class="tmpl-card" style="background:linear-gradient(180deg,#0a0a0a,#1a1a1a);">
+      <div class="tmpl-bg">🎭</div><div class="tmpl-cap cap-double">DOUBLE</div>
+      <div class="tmpl-foot"><h4>Double Trouble</h4><span>Bold Shadow</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="features-section" id="features">
+  <div class="sec-label">Features</div>
+  <h2 class="sec-title">Sab Kuch Free,<br>Sab Kuch Powerful</h2>
+  <p class="sec-sub">Koi subscription nahi, koi watermark nahi. Browser mein hi sab kuch — koi install nahi.</p>
+  <div class="feat-grid">
+    <div class="feat-card"><div class="feat-icon">🎙️</div><h3>Real Transcript</h3><p>Browser ki speech recognition se video ka asli audio sun ke real captions banata hai.</p></div>
+    <div class="feat-card"><div class="feat-icon">🌏</div><h3>15+ Languages</h3><p>Hindi, Urdu, Punjabi, Tamil, Bengali aur bahut kuch. Natural aur accurate captions.</p></div>
+    <div class="feat-card"><div class="feat-icon">🎨</div><h3>12 Premium Templates</h3><p>Mr. Beast, Hormozi, Kalakar, Neon, Retro aur aur bhi. Sab fully customizable.</p></div>
+    <div class="feat-card"><div class="feat-icon">🎛️</div><h3>Advanced Styling</h3><p>Font size slider, line spacing, letter spacing, drop shadow, position X/Y, opacity — Kalakar se bhi zyada control.</p></div>
+    <div class="feat-card"><div class="feat-icon">✏️</div><h3>Click to Edit</h3><p>Har caption ko directly click karke edit karo. Timestamps bhi change karo.</p></div>
+    <div class="feat-card"><div class="feat-icon">📤</div><h3>SRT + VTT Export</h3><p>SRT ya VTT file download karo ya saare captions copy karo — kisi bhi editor mein use karo.</p></div>
+  </div>
+</div>
+
+<div class="how-section" id="how">
+  <div class="sec-label">How It Works</div>
+  <h2 class="sec-title">3 Steps,<br>Ek Minute Mein</h2>
+  <div class="steps-row">
+    <div class="step-card"><div class="step-num">1</div><h3>Video Upload Karo</h3><p>MP4, MOV, AVI ya WebM — koi bhi format. Browser mein hi load hoga, koi server nahi.</p></div>
+    <div class="step-card"><div class="step-num">2</div><h3>AI Captions Banao</h3><p>Language chuno. AI khud audio sun ke real transcript banata hai — video ki lambai ke hisaab se captions.</p></div>
+    <div class="step-card"><div class="step-num">3</div><h3>Customize & Export</h3><p>12 templates, advanced sliders, colors — customize karo. SRT download karo ya copy karo.</p></div>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">Sub<span>Titre</span></div>
+  <div class="f-links">
+    <a href="#">Privacy Policy</a><a href="#">Terms</a><a href="mailto:support@subtitre.io">Contact</a>
+  </div>
+  <p>© 2025 SubTitre · Made for South Asia · 100% Free</p>
+</footer>
+</div>
+
+<!-- ========== STUDIO ========== -->
+<div id="studioPage">
+  <div class="studio-nav">
+    <div class="studio-logo" onclick="goHome()">Sub<span>Titre</span> <span style="font-size:.64rem;font-weight:400;color:var(--muted2);margin-left:6px;">Studio</span></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="rec-badge" id="recBadge"><div class="rec-dot"></div> Transcript ho raha hai...</div>
+      <div class="nav-free-badge">100% Free</div>
+      <div class="back-btn" onclick="goHome()">← Home</div>
+    </div>
+  </div>
+
+  <div class="studio-body">
+
+    <!-- LEFT -->
+    <div class="studio-left">
+      <div class="panel-tabs">
+        <div class="panel-tab active" onclick="switchTab('upload',this)">Upload</div>
+        <div class="panel-tab" onclick="switchTab('captions',this)">Captions</div>
+        <div class="panel-tab" onclick="switchTab('templates',this)">Styles</div>
+      </div>
+
+      <!-- UPLOAD TAB -->
+      <div class="panel-content" id="tab-upload">
+        <div class="upload-zone" id="dropZone">
+          <input type="file" id="videoInput" accept="video/*" onchange="handleVideoUpload(this)">
+          <div class="upload-icon">🎬</div>
+          <h3>Video Upload Karo</h3>
+          <p>Drag karo ya click karke select karo<br>MP4 · MOV · AVI · WebM</p>
+        </div>
+        <div class="video-info" id="videoInfo">
+          <div class="video-info-inner">
+            <span style="font-size:1.3rem;">🎬</span>
+            <div class="video-info-text">
+              <div class="fname" id="vidName">video.mp4</div>
+              <div class="fsize" id="vidSize">—</div>
+              <div class="fdur" id="vidDur">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+        <label class="form-label">Language</label>
+        <select class="lang-select" id="langPicker">
+          <option value="hi-IN">Hindi (हिंदी)</option>
+          <option value="ur-PK">Urdu (اردو)</option>
+          <option value="pa-IN">Punjabi (ਪੰਜਾਬੀ)</option>
+          <option value="ta-IN">Tamil (தமிழ்)</option>
+          <option value="te-IN">Telugu (తెలుగు)</option>
+          <option value="ml-IN">Malayalam</option>
+          <option value="gu-IN">Gujarati (ગુજરાતી)</option>
+          <option value="bn-IN">Bengali (বাংলা)</option>
+          <option value="mr-IN">Marathi (मराठी)</option>
+          <option value="kn-IN">Kannada (ಕನ್ನಡ)</option>
+          <option value="ne-NP">Nepali (नेपाली)</option>
+          <option value="en-US">English</option>
+          <option value="en-IN">English (Indian)</option>
+        </select>
+
+        <label class="form-label">Caption Context</label>
+        <select class="lang-select" id="presetPicker">
+          <option value="general">General / Vlog</option>
+          <option value="news">News / Information</option>
+          <option value="motivational">Motivational</option>
+          <option value="comedy">Comedy / Entertainment</option>
+          <option value="education">Education / Tutorial</option>
+          <option value="business">Business / Finance</option>
+        </select>
+
+        <button class="gen-btn" id="genBtn" onclick="generateCaptions()" disabled>
+          <span id="genBtnText">✨ Captions Generate Karo</span>
+        </button>
+
+        <div class="progress-wrap" id="progressWrap">
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="progress-label" id="progressLabel">Processing...</div>
+        </div>
+
+        <div class="transcript-mode" id="transcriptMode"></div>
+      </div>
+
+      <!-- CAPTIONS TAB -->
+      <div class="panel-content" id="tab-captions" style="display:none;">
+        <div style="display:flex;gap:5px;margin-bottom:11px;">
+          <button class="srt-btn" style="margin:0;flex:1;font-size:.72rem;padding:7px;" onclick="addCaption()">+ Caption</button>
+          <button class="srt-btn" style="margin:0;flex:1;font-size:.72rem;padding:7px;" onclick="clearAllCaptions()">🗑 Saaf Karo</button>
+        </div>
+        <div id="captionsList" class="caption-list">
+          <div class="no-caps">Pehle video upload karo aur captions generate karo ✨</div>
+        </div>
+      </div>
+
+      <!-- STYLES / TEMPLATES TAB -->
+      <div class="panel-content" id="tab-templates" style="display:none;">
+        <div class="tmpl-label">Caption Template</div>
+        <div class="tmpl-grid">
+          <div class="tmpl-item sel" onclick="selectStyle('default',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:rgba(0,0,0,0.75);"><span style="color:#fff;font-size:.6rem;font-weight:700;">Default</span></div>
+              <div class="tmpl-name">Default</div><div class="tmpl-sub">Kala bg, white</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('beast',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#00d4ff;"><span style="color:#000;font-size:.6rem;font-weight:800;text-transform:uppercase;font-family:'Syne',sans-serif;">BEAST</span></div>
+              <div class="tmpl-name">Mr. Beast</div><div class="tmpl-sub">Bold cyan</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('hormozi',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#fff;border-left:3px solid red;"><span style="color:#000;font-size:.6rem;font-style:italic;font-weight:700;">Hormozi</span></div>
+              <div class="tmpl-name">Hormozi</div><div class="tmpl-sub">White italic</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('gadzhi',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#222;"><span style="color:#fff;font-size:.6rem;font-weight:700;text-shadow:1px 1px 0 #000;">Gadzhi</span></div>
+              <div class="tmpl-name">Gadzhi</div><div class="tmpl-sub">Shadow only</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('bubble',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#ffe345;border-radius:10px;"><span style="color:#111;font-size:.6rem;font-weight:700;">Bubble!</span></div>
+              <div class="tmpl-name">Bubble</div><div class="tmpl-sub">Yellow pop</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('hindi',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:linear-gradient(90deg,#ff6b35,#f5c842);"><span style="color:#fff;font-size:.6rem;font-weight:700;">हिंदी</span></div>
+              <div class="tmpl-name">Desi/Hindi</div><div class="tmpl-sub">Gradient</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('minimal',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#111;border-bottom:2px solid #f5c842;"><span style="color:#fff;font-size:.6rem;letter-spacing:.06em;">MINIMAL</span></div>
+              <div class="tmpl-name">Minimal</div><div class="tmpl-sub">Underline</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('fire',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:linear-gradient(90deg,#ff4500,#ff8c00);"><span style="color:#fff;font-size:.6rem;font-weight:800;font-family:'Syne',sans-serif;">🔥FIRE</span></div>
+              <div class="tmpl-name">Fire</div><div class="tmpl-sub">Orange gradient</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('neon',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#000;"><span style="color:#39ff14;font-size:.6rem;font-weight:700;text-shadow:0 0 8px #39ff14;">NEON</span></div>
+              <div class="tmpl-name">Neon</div><div class="tmpl-sub">Green glow</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('retro',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:#1a1a2e;border:1px solid #e94560;"><span style="color:#e94560;font-size:.6rem;font-family:'Syne',sans-serif;">RETRO</span></div>
+              <div class="tmpl-name">Retro</div><div class="tmpl-sub">Gaming pixel</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('kalakar',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:linear-gradient(90deg,#a78bfa,#38bdf8);"><span style="color:#fff;font-size:.6rem;font-weight:800;font-family:'Syne',sans-serif;">KALAKAR</span></div>
+              <div class="tmpl-name">Kalakar Glow</div><div class="tmpl-sub">Purple-blue</div>
+            </div>
+          </div>
+          <div class="tmpl-item" onclick="selectStyle('clean',this)">
+            <div class="tmpl-item-inner">
+              <div class="tmpl-preview-box" style="background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);"><span style="color:#fff;font-size:.6rem;font-weight:600;">Clean</span></div>
+              <div class="tmpl-name">Clean Motion</div><div class="tmpl-sub">Glass blur</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="studio-center">
+      <div class="video-toolbar">
+        <span style="font-size:.7rem;color:var(--muted2);margin-right:2px;">Format:</span>
+        <button class="vtb-btn active" onclick="setAspect('9/16',this)">9:16</button>
+        <button class="vtb-btn" onclick="setAspect('16/9',this)">16:9</button>
+        <button class="vtb-btn" onclick="setAspect('1/1',this)">1:1</button>
+        <button class="vtb-btn" onclick="setAspect('4/5',this)">4:5</button>
+        <div class="vtb-sep"></div>
+        <button class="vtb-btn" id="capToggle" onclick="toggleCapOverlay()">Captions ON</button>
+        <button class="vtb-btn" onclick="toggleMute()" id="muteBtn">🔊</button>
+      </div>
+      <div class="video-area">
+        <div class="video-container" id="videoContainer" style="aspect-ratio:9/16;">
+          <div class="empty-video" id="emptyState">
+            <span>🎬</span>
+            <p>Video upload karo<br>AI captions automatically<br>aa jayenge</p>
+          </div>
+          <video id="mainVideo" style="display:none;" playsinline></video>
+          <div class="caption-overlay" id="capOverlay">
+            <div class="caption-display" id="capDisplay"></div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-bar">
+        <button class="tl-play" id="playBtn" onclick="togglePlay()">▶</button>
+        <span class="tl-time" id="timeCurrent">0:00</span>
+        <div class="tl-track" id="tlTrack" onclick="seekVideo(event)">
+          <div class="tl-prog" id="tlProg" style="width:0%"></div>
+          <div class="tl-handle" id="tlHandle" style="left:0%"></div>
+        </div>
+        <span class="tl-time" id="timeTotal">0:00</span>
+        <div style="font-size:.68rem;color:var(--muted2);margin-left:6px;" id="capCounter">0 captions</div>
+      </div>
+    </div>
+
+    <!-- RIGHT — Advanced Style Settings (Kalakar style) -->
+    <div class="studio-right">
+      <div class="right-title">🎨 Style Settings</div>
+
+      <!-- Font Size Slider -->
+      <div class="style-section">
+        <label>Font Size</label>
+        <div class="size-row" style="margin-bottom:8px;">
+          <button class="size-btn" onclick="setFontSizeBtn('0.75rem',this)">XS</button>
+          <button class="size-btn" onclick="setFontSizeBtn('0.9rem',this)">S</button>
+          <button class="size-btn active" onclick="setFontSizeBtn('1.1rem',this)">M</button>
+          <button class="size-btn" onclick="setFontSizeBtn('1.4rem',this)">L</button>
+          <button class="size-btn" onclick="setFontSizeBtn('1.8rem',this)">XL</button>
+        </div>
+        <div class="slider-row">
+          <input type="range" class="style-slider" id="fontSizeSlider" min="10" max="40" value="20" oninput="setFontSizeSlider(this.value)">
+          <span class="slider-val" id="fontSizeVal">20</span>
+        </div>
+      </div>
+
+      <!-- Text Color -->
+      <div class="style-section">
+        <label>Text Color</label>
+        <div class="color-row">
+          <div class="color-dot sel" style="background:#fff;" onclick="setTextColor('#fff',this)"></div>
+          <div class="color-dot" style="background:#f5c842;" onclick="setTextColor('#f5c842',this)"></div>
+          <div class="color-dot" style="background:#00d4ff;" onclick="setTextColor('#00d4ff',this)"></div>
+          <div class="color-dot" style="background:#ff6b35;" onclick="setTextColor('#ff6b35',this)"></div>
+          <div class="color-dot" style="background:#22c55e;" onclick="setTextColor('#22c55e',this)"></div>
+          <div class="color-dot" style="background:#f87171;" onclick="setTextColor('#f87171',this)"></div>
+          <div class="color-dot" style="background:#a78bfa;" onclick="setTextColor('#a78bfa',this)"></div>
+          <div class="color-dot" style="background:#38bdf8;" onclick="setTextColor('#38bdf8',this)"></div>
+          <div class="color-dot" style="background:#000;border:1px solid #444;" onclick="setTextColor('#000',this)"></div>
+        </div>
+        <div class="hex-row">
+          <div class="hex-swatch" id="textColorSwatch" style="background:#fff;"></div>
+          <span class="hex-hash">#</span>
+          <input class="hex-input" id="textColorHex" value="FFFFFF" maxlength="6" oninput="setTextColorHex(this.value)" placeholder="FFFFFF">
+        </div>
+      </div>
+
+      <!-- Background Color -->
+      <div class="style-section">
+        <label>Background</label>
+        <div class="color-row">
+          <div class="color-dot sel" style="background:rgba(0,0,0,.75);border:1px solid #555;" onclick="setBgColor('rgba(0,0,0,0.75)',this)"></div>
+          <div class="color-dot" style="background:rgba(245,200,66,.88);" onclick="setBgColor('rgba(245,200,66,0.88)',this)"></div>
+          <div class="color-dot" style="background:rgba(255,255,255,0);border:1px solid #555;" onclick="setBgColor('transparent',this)"></div>
+          <div class="color-dot" style="background:rgba(255,255,255,.9);" onclick="setBgColor('rgba(255,255,255,0.9)',this)"></div>
+          <div class="color-dot" style="background:rgba(0,212,255,.8);" onclick="setBgColor('rgba(0,212,255,0.8)',this)"></div>
+          <div class="color-dot" style="background:rgba(30,30,200,.82);" onclick="setBgColor('rgba(30,30,200,0.82)',this)"></div>
+          <div class="color-dot" style="background:rgba(167,139,250,.85);" onclick="setBgColor('rgba(167,139,250,0.85)',this)"></div>
+          <div class="color-dot" style="background:rgba(255,107,53,.85);" onclick="setBgColor('rgba(255,107,53,0.85)',this)"></div>
+        </div>
+      </div>
+
+      <!-- Position -->
+      <div class="style-section">
+        <label>Position</label>
+        <div class="pos-grid">
+          <button class="pos-btn" onclick="setPos('top',this)">↑ Upar</button>
+          <button class="pos-btn" onclick="setPos('center',this)">● Beech</button>
+          <button class="pos-btn active" onclick="setPos('bottom',this)">↓ Neeche</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px;">
+          <div>
+            <div style="font-size:.62rem;color:var(--muted2);margin-bottom:3px;">Position X %</div>
+            <div class="slider-row">
+              <input type="range" class="style-slider" id="posXSlider" min="10" max="90" value="50" oninput="setPosX(this.value)">
+              <span class="slider-val" id="posXVal">50</span>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:.62rem;color:var(--muted2);margin-bottom:3px;">Position Y %</div>
+            <div class="slider-row">
+              <input type="range" class="style-slider" id="posYSlider" min="5" max="95" value="85" oninput="setPosY(this.value)">
+              <span class="slider-val" id="posYVal">85</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Letter Spacing -->
+      <div class="style-section">
+        <label>Letter Spacing</label>
+        <div class="slider-row">
+          <input type="range" class="style-slider" id="letterSpaceSlider" min="-3" max="10" value="0" oninput="setLetterSpacing(this.value)">
+          <span class="slider-val" id="letterSpaceVal">0</span>
+        </div>
+      </div>
+
+      <!-- Line Spacing -->
+      <div class="style-section">
+        <label>Line Spacing</label>
+        <div class="slider-row">
+          <input type="range" class="style-slider" id="lineSpaceSlider" min="10" max="25" value="14" oninput="setLineSpacing(this.value)">
+          <span class="slider-val" id="lineSpaceVal">1.4</span>
+        </div>
+      </div>
+
+      <!-- Styles Bold/Italic/Upper -->
+      <div class="style-section">
+        <label>Bold / Italic</label>
+        <div class="size-row">
+          <button class="size-btn active" id="boldBtn" onclick="toggleBold(this)"><b>B</b></button>
+          <button class="size-btn" id="italicBtn" onclick="toggleItalic(this)"><i>I</i></button>
+          <button class="size-btn" id="upperBtn" onclick="toggleUpper(this)">AA</button>
+        </div>
+      </div>
+
+      <!-- Text Stroke -->
+      <div class="style-section">
+        <label>Text Stroke</label>
+        <div class="stroke-row">
+          <button class="stroke-btn active" onclick="setStroke('none',this)">None</button>
+          <button class="stroke-btn" onclick="setStroke('thin',this)">Thin</button>
+          <button class="stroke-btn" onclick="setStroke('thick',this)">Thick</button>
+        </div>
+      </div>
+
+      <!-- Drop Shadow -->
+      <div class="style-section">
+        <div class="toggle-row">
+          <span class="toggle-label">Drop Shadow</span>
+          <div class="toggle-switch" id="shadowToggle" onclick="toggleShadow(this)"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="shadow-sub" id="shadowSub">
+          <label>Shadow Color</label>
+          <div class="color-row" style="margin-bottom:6px;">
+            <div class="color-dot sel" style="background:#000;border:1px solid #444;" onclick="setShadowColor('#000',this)"></div>
+            <div class="color-dot" style="background:#39ff14;" onclick="setShadowColor('#39ff14',this)"></div>
+            <div class="color-dot" style="background:#ff4500;" onclick="setShadowColor('#ff4500',this)"></div>
+            <div class="color-dot" style="background:#00d4ff;" onclick="setShadowColor('#00d4ff',this)"></div>
+            <div class="color-dot" style="background:#a78bfa;" onclick="setShadowColor('#a78bfa',this)"></div>
+          </div>
+          <label>Opacity <span id="shadowOpacityVal">35</span>%</label>
+          <input type="range" class="style-slider" id="shadowOpacity" min="10" max="100" value="35" oninput="setShadowOpacity(this.value)" style="width:100%;margin-top:3px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:8px;">
+            <div>
+              <label>Offset X <span id="shadowXVal">5</span></label>
+              <input type="range" class="style-slider" id="shadowX" min="-20" max="20" value="5" oninput="setShadowX(this.value)" style="width:100%;">
+            </div>
+            <div>
+              <label>Offset Y <span id="shadowYVal">5</span></label>
+              <input type="range" class="style-slider" id="shadowY" min="-20" max="20" value="5" oninput="setShadowY(this.value)" style="width:100%;">
+            </div>
+          </div>
+          <label style="margin-top:6px;">Blur <span id="shadowBlurVal">15</span></label>
+          <input type="range" class="style-slider" id="shadowBlur" min="0" max="40" value="15" oninput="setShadowBlur(this.value)" style="width:100%;margin-top:3px;">
+        </div>
+      </div>
+
+      <!-- Border Radius -->
+      <div class="style-section">
+        <label>Border Radius</label>
+        <div class="size-row">
+          <button class="size-btn active" onclick="setRadius('4px',this)">Square</button>
+          <button class="size-btn" onclick="setRadius('10px',this)">Round</button>
+          <button class="size-btn" onclick="setRadius('100px',this)">Pill</button>
+        </div>
+      </div>
+
+      <!-- Background Opacity -->
+      <div class="style-section">
+        <label>BG Opacity</label>
+        <div class="slider-row">
+          <input type="range" class="style-slider" id="bgOpacitySlider" min="0" max="100" value="75" oninput="setBgOpacity(this.value)">
+          <span class="slider-val" id="bgOpacityVal">75%</span>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <div class="right-title" style="font-size:.76rem;margin-bottom:8px;">📤 Export</div>
+      <button class="export-btn" onclick="exportSRT()">⬇ SRT Download</button>
+      <button class="srt-btn" onclick="exportVTT()">⬇ VTT Download</button>
+      <button class="copy-btn" onclick="copyAllCaptions()">📋 Captions Copy</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =================== PAGE NAVIGATION ===================
+function openStudio(){
+  document.getElementById('landingPage').style.display='none';
+  const sp=document.getElementById('studioPage');
+  sp.style.display='flex';sp.style.flexDirection='column';sp.style.height='100vh';
+  window.scrollTo(0,0);
+}
+function goHome(){
+  document.getElementById('landingPage').style.display='block';
+  document.getElementById('studioPage').style.display='none';
+  stopRecognition();window.scrollTo(0,0);
+}
+function switchTab(tab,el){
+  document.querySelectorAll('.panel-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['upload','captions','templates'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+  });
+}
+
+// =================== DRAG & DROP ===================
+const dropZone=document.getElementById('dropZone');
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag'));
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();dropZone.classList.remove('drag');
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('video/')) loadVideo(f);
+});
+function handleVideoUpload(input){if(input.files[0]) loadVideo(input.files[0]);}
+
+function loadVideo(file){
+  const url=URL.createObjectURL(file);
+  const vid=document.getElementById('mainVideo');
+  vid.src=url;vid.style.display='block';
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('genBtn').disabled=false;
+  const info=document.getElementById('videoInfo');
+  info.style.display='block';
+  document.getElementById('vidName').textContent=file.name.length>22?file.name.slice(0,20)+'…':file.name;
+  document.getElementById('vidSize').textContent=(file.size/1024/1024).toFixed(1)+' MB';
+  vid.addEventListener('timeupdate',updateTimeline);
+  vid.addEventListener('loadedmetadata',()=>{
+    document.getElementById('timeTotal').textContent=fmtTime(vid.duration);
+    document.getElementById('vidDur').textContent='Duration: '+fmtTime(vid.duration);
+  });
+  vid.addEventListener('ended',()=>document.getElementById('playBtn').textContent='▶');
+  showToast('✅ Video load ho gayi! Captions generate karo.','success');
+}
+
+// =================== TIMELINE ===================
+function updateTimeline(){
+  const vid=document.getElementById('mainVideo');
+  if(!vid.duration)return;
+  const pct=(vid.currentTime/vid.duration)*100;
+  document.getElementById('tlProg').style.width=pct+'%';
+  document.getElementById('tlHandle').style.left=pct+'%';
+  document.getElementById('timeCurrent').textContent=fmtTime(vid.currentTime);
+  updateActiveCap(vid.currentTime);
+}
+function seekVideo(e){
+  const vid=document.getElementById('mainVideo');
+  if(!vid.duration)return;
+  const rect=document.getElementById('tlTrack').getBoundingClientRect();
+  const pct=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+  vid.currentTime=pct*vid.duration;
+}
+function togglePlay(){
+  const vid=document.getElementById('mainVideo'),btn=document.getElementById('playBtn');
+  if(vid.paused){vid.play();btn.textContent='⏸';}else{vid.pause();btn.textContent='▶';}
+}
+function toggleMute(){
+  const vid=document.getElementById('mainVideo'),btn=document.getElementById('muteBtn');
+  vid.muted=!vid.muted;btn.textContent=vid.muted?'🔇':'🔊';
+}
+function fmtTime(s){
+  const m=Math.floor(s/60),sec=Math.floor(s%60);
+  return m+':'+(sec<10?'0':'')+sec;
+}
+
+// =================== CAPTIONS STATE ===================
+let captions=[];
+let capVisible=true;
+let styleState={
+  fontSize:20,textColor:'#fff',
+  bgColor:'rgba(0,0,0,0.75)',bgOpacity:75,bgBaseColor:'rgba(0,0,0',
+  position:'bottom',posX:50,posY:85,
+  bold:true,italic:false,upper:false,
+  preset:'default',stroke:'none',radius:'4px',
+  letterSpacing:0,lineSpacing:1.4,
+  shadow:false,shadowColor:'#000',shadowOpacity:35,shadowX:5,shadowY:5,shadowBlur:15
+};
+
+// =================== SPEECH RECOGNITION ===================
+let recognition=null;
+function stopRecognition(){
+  if(recognition){try{recognition.stop();}catch(e){}}
+  recognition=null;
+  document.getElementById('recBadge').style.display='none';
+}
+
+async function tryRealTranscript(lang){
+  return new Promise((resolve)=>{
+    if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){resolve(null);return;}
+    const vid=document.getElementById('mainVideo');
+    const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+    recognition=new SpeechRecognition();
+    recognition.lang=lang;recognition.continuous=true;recognition.interimResults=false;recognition.maxAlternatives=1;
+    const collected=[];
+    document.getElementById('recBadge').style.display='flex';
+    let finished=false;
+    recognition.onresult=(e)=>{
+      for(let i=e.resultIndex;i<e.results.length;i++){
+        if(e.results[i].isFinal) collected.push({text:e.results[i][0].transcript.trim(),time:Date.now()});
+      }
+    };
+    recognition.onerror=()=>{if(!finished){finished=true;resolve(null);}};
+    recognition.onend=()=>{
+      document.getElementById('recBadge').style.display='none';
+      if(!finished){finished=true;resolve(collected.length>0?collected:null);}
+    };
+    vid.currentTime=0;vid.muted=false;
+    vid.play().then(()=>{
+      recognition.start();
+      const dur=Math.min(vid.duration||30,90);
+      setTimeout(()=>{
+        vid.pause();vid.muted=false;stopRecognition();
+        if(!finished){finished=true;resolve(collected.length>0?collected:null);}
+      },dur*1000+2000);
+    }).catch(()=>{stopRecognition();if(!finished){finished=true;resolve(null);}});
+  });
+}
+
+function buildCaptionsFromTranscript(transcript,duration){
+  if(!transcript||transcript.length===0)return null;
+  const totalTime=duration||30;
+  const segDur=totalTime/transcript.length;
+  return transcript.map((r,i)=>({
+    start:Math.round(i*segDur*10)/10,
+    end:Math.round((i+1)*segDur*10)/10,
+    text:r.text
+  }));
+}
+
+// =================== CAPTION GENERATION ===================
+async function generateCaptions(){
+  const lang=document.getElementById('langPicker').value;
+  const ctx=document.getElementById('presetPicker').value;
+  const btn=document.getElementById('genBtn');
+  const prog=document.getElementById('progressWrap');
+  const fill=document.getElementById('progressFill');
+  const lbl=document.getElementById('progressLabel');
+  const modeEl=document.getElementById('transcriptMode');
+
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div><span>Processing...</span>';
+  prog.style.display='block';modeEl.className='transcript-mode';modeEl.textContent='';
+
+  lbl.textContent='🎙️ Audio sun raha hai...';fill.style.width='15%';
+  showToast('🎙️ Video sun ke transcript bana raha hai...','info');
+
+  const vid=document.getElementById('mainVideo');
+  const transcript=await tryRealTranscript(lang);
+
+  fill.style.width='60%';lbl.textContent='AI captions format kar raha hai...';
+  let usedReal=false;
+
+  if(transcript&&transcript.length>0){
+    usedReal=true;
+    captions=buildCaptionsFromTranscript(transcript,vid.duration||30);
+    fill.style.width='100%';lbl.textContent='Real transcript tayaar! 🎉';
+    modeEl.className='transcript-mode real';
+    modeEl.innerHTML='✅ Real audio transcript — '+captions.length+' captions';
+    modeEl.style.display='flex';
+  } else {
+    lbl.textContent='AI captions bana raha hai...';fill.style.width='75%';
+    const langName=document.getElementById('langPicker').options[document.getElementById('langPicker').selectedIndex].text.split(' ')[0];
+    const dur=Math.round(vid.duration||30);
+    const prompt=`You are an AI caption generator. Generate realistic captions for a ${dur}-second ${langName} language video about ${ctx}.
+Video duration: ${dur} seconds. Create captions proportional to the video length.
+- Under 30s: 5-8 segments
+- 30-60s: 8-14 segments  
+- 60-120s: 14-22 segments
+- 120s+: 22-35 segments
+Each segment 2-5 seconds. Return ONLY a JSON array, no markdown:
+[{"start":0.0,"end":3.2,"text":"caption here"},...]
+Use actual ${langName} words/phrases. For Hindi use Devanagari or Hinglish naturally. Space evenly across all ${dur} seconds.`;
+
+    try{
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1500,messages:[{role:"user",content:prompt}]})
+      });
+      const data=await resp.json();
+      let raw=data.content.map(c=>c.text||'').join('');
+      raw=raw.replace(/```json|```/g,'').trim();
+      captions=JSON.parse(raw);
+      fill.style.width='100%';lbl.textContent='AI captions tayaar! 🎉';
+      modeEl.className='transcript-mode demo';
+      modeEl.innerHTML='⚡ AI generated — '+captions.length+' captions';
+      modeEl.style.display='flex';
+    }catch(e){
+      captions=getHardcodedCaptions(langName,vid.duration||30);
+      fill.style.width='100%';lbl.textContent='Demo captions load!';
+      modeEl.className='transcript-mode demo';
+      modeEl.innerHTML='📝 Demo captions — '+captions.length+' captions';
+      modeEl.style.display='flex';
+    }
+  }
+
+  renderCaptions();updateCapCounter();
+  switchTab('captions',document.querySelectorAll('.panel-tab')[1]);
+  showToast((usedReal?'🎙️ Real transcript':'✅ Captions')+': '+captions.length+' ready!','success');
+  setTimeout(()=>{prog.style.display='none';fill.style.width='0%';btn.disabled=false;btn.innerHTML='<span>✨ Dobara Generate Karo</span>';},2500);
+}
+
+function getHardcodedCaptions(lang,dur){
+  const bank={
+    Hindi:[
+      {start:0,end:3,text:"नमस्ते दोस्तों, स्वागत है आपका इस वीडियो में"},
+      {start:3.5,end:7,text:"आज हम बात करेंगे एक बहुत ज़रूरी टॉपिक के बारे में"},
+      {start:7.5,end:11,text:"यह जानकारी आपके बहुत काम आएगी"},
+      {start:11.5,end:15,text:"तो चलिए शुरू करते हैं बिना देरी किए"},
+      {start:15.5,end:19,text:"पहली बात जो आपको जाननी चाहिए"},
+      {start:20,end:24,text:"इसे ध्यान से सुनिए, बहुत important है"},
+      {start:24.5,end:28,text:"यह trick use करके आप बहुत आगे जा सकते हो"},
+      {start:29,end:dur,text:"तो video को like करो और subscribe करना मत भूलना"},
+    ],
+    English:[
+      {start:0,end:3,text:"Hey everyone, welcome back to my channel!"},
+      {start:3.5,end:7,text:"Today we're talking about something really important"},
+      {start:7.5,end:11,text:"This is going to change the way you work"},
+      {start:12,end:16,text:"So let's get straight into it"},
+      {start:17,end:21,text:"The first thing you need to know"},
+      {start:22,end:26,text:"Pay close attention — this is key"},
+      {start:27,end:dur,text:"Like and subscribe for more content!"},
+    ],
+  };
+  return bank[lang]||bank['Hindi'];
+}
+
+// =================== RENDER CAPTIONS ===================
+function renderCaptions(){
+  const list=document.getElementById('captionsList');
+  list.innerHTML='';
+  if(!captions.length){
+    list.innerHTML='<div class="no-caps">Pehle video upload karo aur captions generate karo ✨</div>';return;
+  }
+  captions.forEach((cap,i)=>{
+    const div=document.createElement('div');
+    div.className='cap-item';div.dataset.idx=i;
+    div.onclick=(e)=>{
+      if(e.target.classList.contains('cap-delete'))return;
+      document.querySelectorAll('.cap-item').forEach(c=>c.classList.remove('sel'));
+      div.classList.add('sel');
+      const vid=document.getElementById('mainVideo');
+      if(vid.src) vid.currentTime=cap.start;
+    };
+    div.innerHTML=`<div class="cap-time">
+      <span>
+        <span contenteditable="true" onblur="updateCapTime(${i},'start',this.textContent)">${fmtTime(cap.start)}</span>
+        → <span contenteditable="true" onblur="updateCapTime(${i},'end',this.textContent)">${fmtTime(cap.end)}</span>
+      </span>
+      <span class="cap-delete" onclick="deleteCaption(${i})">✕</span>
+    </div>
+    <div class="cap-text" contenteditable="true" onblur="updateCapText(${i},this.textContent)">${cap.text}</div>`;
+    list.appendChild(div);
+  });
+}
+
+function updateCapText(i,txt){captions[i].text=txt.trim();}
+function updateCapTime(i,field,val){
+  const parts=val.split(':');
+  if(parts.length===2) captions[i][field]=parseInt(parts[0])*60+parseFloat(parts[1]);
+}
+function deleteCaption(i){captions.splice(i,1);renderCaptions();updateCapCounter();}
+function addCaption(){
+  const vid=document.getElementById('mainVideo');const t=vid.currentTime||0;
+  captions.push({start:t,end:t+3,text:'New caption...'});
+  captions.sort((a,b)=>a.start-b.start);
+  renderCaptions();updateCapCounter();
+  switchTab('captions',document.querySelectorAll('.panel-tab')[1]);
+}
+function clearAllCaptions(){
+  if(!confirm('Saare captions delete karein?'))return;
+  captions=[];renderCaptions();updateCapCounter();
+}
+function updateCapCounter(){
+  document.getElementById('capCounter').textContent=captions.length+' caption'+(captions.length===1?'':'s');
+}
+function updateActiveCap(t){
+  const active=captions.find(c=>t>=c.start&&t<=c.end);
+  const disp=document.getElementById('capDisplay');
+  if(active&&capVisible){
+    let txt=active.text;if(styleState.upper) txt=txt.toUpperCase();
+    disp.textContent=txt;disp.style.display='inline-block';applyStyleToDisplay();
+  } else {disp.textContent='';disp.style.display='none';}
+}
+
+// =================== STYLE CONTROLS ===================
+function setFontSizeBtn(s,el){
+  // Parse px equivalent for slider
+  const map={'0.75rem':12,'0.9rem':14,'1.1rem':20,'1.4rem':26,'1.8rem':34};
+  styleState.fontSize=map[s]||20;
+  document.getElementById('fontSizeSlider').value=styleState.fontSize;
+  document.getElementById('fontSizeVal').textContent=styleState.fontSize;
+  document.querySelectorAll('.size-row .size-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');applyStyleToDisplay();
+}
+function setFontSizeSlider(v){
+  styleState.fontSize=parseInt(v);
+  document.getElementById('fontSizeVal').textContent=v;
+  applyStyleToDisplay();
+}
+function setLetterSpacing(v){
+  styleState.letterSpacing=parseInt(v);
+  document.getElementById('letterSpaceVal').textContent=v;
+  applyStyleToDisplay();
+}
+function setLineSpacing(v){
+  styleState.lineSpacing=(parseInt(v)/10).toFixed(1);
+  document.getElementById('lineSpaceVal').textContent=styleState.lineSpacing;
+  applyStyleToDisplay();
+}
+function setPosX(v){
+  styleState.posX=parseInt(v);document.getElementById('posXVal').textContent=v;
+  applyStyleToDisplay();
+}
+function setPosY(v){
+  styleState.posY=parseInt(v);document.getElementById('posYVal').textContent=v;
+  applyStyleToDisplay();
+}
+function setBgOpacity(v){
+  styleState.bgOpacity=parseInt(v);document.getElementById('bgOpacityVal').textContent=v+'%';
+  applyStyleToDisplay();
+}
+function setTextColor(c,el){
+  styleState.textColor=c;styleState.preset='default';
+  document.querySelectorAll('.style-section .color-row .color-dot').forEach(d=>{
+    if(d.parentElement.parentElement.querySelector('label')&&
+      d.parentElement.parentElement.querySelector('label').textContent.trim().startsWith('Text')) d.classList.remove('sel');
+  });
+  el.classList.add('sel');
+  // Update hex input
+  document.getElementById('textColorSwatch').style.background=c;
+  const hex=c.replace('#','');
+  if(hex.length===6||hex.length===3) document.getElementById('textColorHex').value=hex.toUpperCase();
+  applyStyleToDisplay();
+}
+function setTextColorHex(v){
+  if(v.length===6){
+    styleState.textColor='#'+v;
+    document.getElementById('textColorSwatch').style.background='#'+v;
+    applyStyleToDisplay();
+  }
+}
+function setBgColor(c,el){
+  styleState.bgColor=c;styleState.preset='default';
+  el.parentElement.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('sel'));
+  el.classList.add('sel');applyStyleToDisplay();
+}
+function setPos(p,el){
+  styleState.position=p;
+  document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');applyStyleToDisplay();
+}
+function toggleBold(el){styleState.bold=!styleState.bold;el.classList.toggle('active',styleState.bold);applyStyleToDisplay();}
+function toggleItalic(el){styleState.italic=!styleState.italic;el.classList.toggle('active',styleState.italic);applyStyleToDisplay();}
+function toggleUpper(el){styleState.upper=!styleState.upper;el.classList.toggle('active',styleState.upper);applyStyleToDisplay();}
+function setStroke(s,el){
+  styleState.stroke=s;
+  document.querySelectorAll('.stroke-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');applyStyleToDisplay();
+}
+function setRadius(r,el){
+  styleState.radius=r;
+  el.parentElement.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');applyStyleToDisplay();
+}
+function toggleShadow(el){
+  el.classList.toggle('on');
+  styleState.shadow=el.classList.contains('on');
+  document.getElementById('shadowSub').classList.toggle('visible',styleState.shadow);
+  applyStyleToDisplay();
+}
+function setShadowColor(c,el){
+  styleState.shadowColor=c;
+  el.parentElement.querySelectorAll('.color-dot').forEach(d=>d.classList.remove('sel'));
+  el.classList.add('sel');applyStyleToDisplay();
+}
+function setShadowOpacity(v){styleState.shadowOpacity=parseInt(v);document.getElementById('shadowOpacityVal').textContent=v;applyStyleToDisplay();}
+function setShadowX(v){styleState.shadowX=parseInt(v);document.getElementById('shadowXVal').textContent=v;applyStyleToDisplay();}
+function setShadowY(v){styleState.shadowY=parseInt(v);document.getElementById('shadowYVal').textContent=v;applyStyleToDisplay();}
+function setShadowBlur(v){styleState.shadowBlur=parseInt(v);document.getElementById('shadowBlurVal').textContent=v;applyStyleToDisplay();}
+
+function selectStyle(preset,el){
+  styleState.preset=preset;
+  document.querySelectorAll('.tmpl-item').forEach(i=>i.classList.remove('sel'));
+  el.classList.add('sel');
+  const presets={
+    default:{textColor:'#fff',bgColor:'rgba(0,0,0,0.75)'},
+    beast:{textColor:'#000',bgColor:'#00d4ff'},
+    hormozi:{textColor:'#000',bgColor:'#fff'},
+    gadzhi:{textColor:'#fff',bgColor:'transparent'},
+    bubble:{textColor:'#111',bgColor:'#ffe345'},
+    hindi:{textColor:'#fff',bgColor:'linear-gradient(90deg,#ff6b35,#f5c842)'},
+    minimal:{textColor:'#fff',bgColor:'transparent'},
+    fire:{textColor:'#fff',bgColor:'linear-gradient(90deg,#ff4500,#ff8c00)'},
+    neon:{textColor:'#39ff14',bgColor:'transparent'},
+    retro:{textColor:'#e94560',bgColor:'#1a1a2e'},
+    kalakar:{textColor:'#fff',bgColor:'linear-gradient(90deg,#a78bfa,#38bdf8)'},
+    clean:{textColor:'#fff',bgColor:'rgba(0,0,0,0.5)'},
+  };
+  if(presets[preset]) Object.assign(styleState,presets[preset]);
+  applyStyleToDisplay();
+}
+
+function setAspect(ratio,el){
+  document.getElementById('videoContainer').style.aspectRatio=ratio;
+  document.querySelectorAll('.vtb-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+function toggleCapOverlay(){
+  capVisible=!capVisible;
+  const btn=document.getElementById('capToggle');
+  btn.textContent=capVisible?'Captions ON':'Captions OFF';
+  btn.classList.toggle('active',capVisible);
+  if(!capVisible){document.getElementById('capDisplay').textContent='';document.getElementById('capDisplay').style.display='none';}
+}
+
+function applyStyleToDisplay(){
+  const d=document.getElementById('capDisplay');
+  const ov=document.getElementById('capOverlay');
+  if(!d)return;
+
+  // Reset
+  d.style.cssText='';
+  d.style.display='inline-block';
+  d.style.maxWidth='92%';
+  d.style.wordBreak='break-word';
+  d.style.transition='opacity .12s';
+  d.style.fontFamily="'Plus Jakarta Sans',sans-serif";
+  d.style.padding='7px 16px';
+
+  const fsz=styleState.fontSize;
+  d.style.fontSize=fsz+'px';
+  d.style.color=styleState.textColor;
+  d.style.background=styleState.bgColor;
+  d.style.fontWeight=styleState.bold?'700':'400';
+  d.style.fontStyle=styleState.italic?'italic':'normal';
+  d.style.borderRadius=styleState.radius;
+  d.style.letterSpacing=styleState.letterSpacing+'px';
+  d.style.lineHeight=styleState.lineSpacing;
+
+  // Position — use posX/posY if custom, else top/bottom/center
+  ov.style.cssText='position:absolute;left:0;right:0;text-align:center;';
+  ov.style.top=styleState.posY+'%';
+  ov.style.transform='translateY(-50%)';
+  ov.style.padding='0 8px';
+
+  // Stroke
+  let textShadow='none';
+  if(styleState.stroke==='thin'){
+    textShadow='-1px -1px 0 rgba(0,0,0,.8),1px -1px 0 rgba(0,0,0,.8),-1px 1px 0 rgba(0,0,0,.8),1px 1px 0 rgba(0,0,0,.8)';
+  } else if(styleState.stroke==='thick'){
+    textShadow='-2px -2px 0 #000,2px -2px 0 #000,-2px 2px 0 #000,2px 2px 0 #000,-1px 0 0 #000,1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000';
+  }
+
+  // Drop shadow (combines with stroke)
+  if(styleState.shadow){
+    const sc=hexToRgb(styleState.shadowColor)||'0,0,0';
+    const sa=styleState.shadowOpacity/100;
+    const dropShadow=`${styleState.shadowX}px ${styleState.shadowY}px ${styleState.shadowBlur}px rgba(${sc},${sa})`;
+    if(textShadow==='none') textShadow=dropShadow;
+    else textShadow+=', '+dropShadow;
+  }
+  d.style.textShadow=textShadow;
+
+  // Preset overrides
+  const p=styleState.preset;
+  if(p==='beast'){
+    d.style.background='#00d4ff';d.style.color='#000';d.style.textTransform='uppercase';
+    d.style.fontFamily="'Syne',sans-serif";d.style.letterSpacing='.04em';d.style.textShadow='none';
+  } else if(p==='hormozi'){
+    d.style.background='#fff';d.style.color='#000';d.style.fontStyle='italic';
+    d.style.borderLeft='4px solid red';d.style.paddingLeft='12px';d.style.borderRadius='0';d.style.textShadow='none';
+  } else if(p==='gadzhi'){
+    d.style.background='transparent';d.style.color='#fff';
+    d.style.textShadow='2px 2px 0 #000,-1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000';
+  } else if(p==='bubble'){
+    d.style.background='#ffe345';d.style.color='#111';d.style.borderRadius='14px';d.style.textShadow='none';
+  } else if(p==='hindi'){
+    d.style.background='linear-gradient(90deg,#ff6b35,#f5c842)';d.style.color='#fff';d.style.borderRadius='4px';d.style.textShadow='none';
+  } else if(p==='minimal'){
+    d.style.background='transparent';d.style.borderBottom='2px solid #f5c842';d.style.borderRadius='0';d.style.color='#fff';
+    d.style.paddingLeft='4px';d.style.paddingRight='4px';
+  } else if(p==='fire'){
+    d.style.background='linear-gradient(90deg,#ff4500,#ff8c00)';d.style.color='#fff';
+    d.style.fontFamily="'Syne',sans-serif";d.style.textTransform='uppercase';d.style.textShadow='none';
+  } else if(p==='neon'){
+    d.style.background='transparent';d.style.color='#39ff14';
+    d.style.textShadow='0 0 8px #39ff14,0 0 20px #39ff14,0 0 40px #39ff14';
+    d.style.fontFamily="'Syne',sans-serif";
+  } else if(p==='retro'){
+    d.style.background='#1a1a2e';d.style.color='#e94560';
+    d.style.border='1px solid #e94560';d.style.fontFamily="'Syne',sans-serif";
+    d.style.letterSpacing='.08em';d.style.textShadow='none';
+  } else if(p==='kalakar'){
+    d.style.background='linear-gradient(90deg,#a78bfa,#38bdf8)';d.style.color='#fff';
+    d.style.fontFamily="'Syne',sans-serif";d.style.textTransform='uppercase';d.style.letterSpacing='.06em';
+    d.style.textShadow='0 2px 12px rgba(167,139,250,.5)';
+  } else if(p==='clean'){
+    d.style.background='rgba(0,0,0,0.5)';d.style.backdropFilter='blur(10px)';
+    d.style.webkitBackdropFilter='blur(10px)';d.style.color='#fff';d.style.borderRadius='10px';
+    d.style.border='1px solid rgba(255,255,255,0.12)';
+  }
+}
+
+function hexToRgb(hex){
+  const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return r?parseInt(r[1],16)+','+parseInt(r[2],16)+','+parseInt(r[3],16):null;
+}
+
+// =================== EXPORT ===================
+function exportSRT(){
+  if(!captions.length){showToast('Pehle captions generate karo!','error');return;}
+  let srt='';
+  captions.forEach((c,i)=>{srt+=`${i+1}\n${toSRTTime(c.start)} --> ${toSRTTime(c.end)}\n${c.text}\n\n`;});
+  download(srt,'captions.srt','text/plain');
+  showToast('✅ SRT file download ho gayi!','success');
+}
+function exportVTT(){
+  if(!captions.length){showToast('Pehle captions generate karo!','error');return;}
+  let vtt='WEBVTT\n\n';
+  captions.forEach((c,i)=>{vtt+=`${i+1}\n${toVTTTime(c.start)} --> ${toVTTTime(c.end)}\n${c.text}\n\n`;});
+  download(vtt,'captions.vtt','text/vtt');
+  showToast('✅ VTT file download ho gayi!','success');
+}
+function download(content,name,type){
+  const blob=new Blob([content],{type});const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=name;a.click();
+}
+function toSRTTime(s){
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=Math.floor(s%60),ms=Math.round((s%1)*1000);
+  return `${pad(h)}:${pad(m)}:${pad(sec)},${pad(ms,3)}`;
+}
+function toVTTTime(s){
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=Math.floor(s%60),ms=Math.round((s%1)*1000);
+  return `${pad(h)}:${pad(m)}:${pad(sec)}.${pad(ms,3)}`;
+}
+function pad(n,l=2){return String(n).padStart(l,'0');}
+function copyAllCaptions(){
+  if(!captions.length){showToast('Pehle captions generate karo!','error');return;}
+  const txt=captions.map(c=>`[${fmtTime(c.start)}] ${c.text}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>showToast('✅ Captions clipboard mein copy ho gaye!','success'));
+}
+
+// =================== TOAST ===================
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(type||'');
+  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+</body>
+</html>
